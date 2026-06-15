@@ -1,0 +1,230 @@
+/* ── Overview page ─────────────────────────────────────── */
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Header */
+.overview-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.overview-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #e8e8e8;
+  margin: 0 0 4px;
+  letter-spacing: -0.3px;
+}
+
+.overview-sub {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+.btn-primary {
+  background: #7c6ff7;
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover {
+  background: #6a5ee0;
+}
+
+/* Stat cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  background: #111113;
+  border: 1px solid #1e1e22;
+  border-radius: 10px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.stat-value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #e8e8e8;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.stat-note {
+  font-size: 11px;
+  color: #444;
+}
+
+/* Chart card */
+.chart-card {
+  background: #111113;
+  border: 1px solid #1e1e22;
+  border-radius: 10px;
+  padding: 20px 22px;
+}
+
+.chart-card-header {
+  margin-bottom: 16px;
+}
+
+.chart-title {
+  font-size: 12px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* Recent links */
+.recent-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.recent-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-label {
+  font-size: 12px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.see-all {
+  font-size: 12px;
+  color: #7c6ff7;
+  text-decoration: none;
+}
+
+.see-all:hover {
+  text-decoration: underline;
+}
+
+/* Table */
+.links-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.links-table th {
+  text-align: left;
+  color: #444;
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 12px 10px 0;
+  border-bottom: 1px solid #1e1e22;
+}
+
+.links-table td {
+  padding: 11px 12px 11px 0;
+  border-bottom: 1px solid #161618;
+  color: #bbb;
+  vertical-align: middle;
+}
+
+.links-table tr:last-child td {
+  border-bottom: none;
+}
+
+.slug-chip {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  background: #1a1a1f;
+  color: #7c6ff7;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #26262c;
+}
+
+.dest-url {
+  color: #666;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Status badges */
+.status-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.status-active    { background: #0d2e1a; color: #3ddc84; border: 1px solid #1a4d2e; }
+.status-scheduled { background: #1e1a00; color: #f5c400; border: 1px solid #3d3500; }
+.status-expired   { background: #2e0d0d; color: #dc3d3d; border: 1px solid #4d1a1a; }
+.status-inactive  { background: #1a1a1a; color: #555;    border: 1px solid #2a2a2a; }
+
+.date-cell {
+  font-size: 12px;
+  color: #444;
+  white-space: nowrap;
+}
+
+.row-action {
+  font-size: 12px;
+  color: #7c6ff7;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.row-action:hover { text-decoration: underline; }
+
+/* Empty state */
+.empty-state {
+  background: #111113;
+  border: 1px dashed #222226;
+  border-radius: 10px;
+  padding: 48px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #444;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .overview-header { flex-direction: column; }
+  .links-table th:nth-child(4),
+  .links-table td:nth-child(4) { display: none; }
+}

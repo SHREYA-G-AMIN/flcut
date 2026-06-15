@@ -19,5 +19,5 @@ export const analytics = pgTable("analytics", {
   timestamp: timestamp("timestamp").defaultNow().notNull(),
   visitorHash: varchar("visitor_hash", { length: 64 }).notNull(),
   referrer: varchar("referrer", { length: 255 }).default("Direct"),
-  device: varchar("device", { length: 50 }).default("Desktop"),
+createdAt: timestamp("created_at").defaultNow().notNull(),
 });
