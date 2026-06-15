@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { links, analytics } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 // 1. Initialize our database connection
 const sqlConnection = neon(process.env.DATABASE_URL!);
@@ -52,17 +52,11 @@ export async function GET(
     const referrer = request.headers.get("referer") || "Direct";
     const clientHash = Buffer.from(`${ip}-${userAgent}`).toString("base64").slice(0, 32);
 
-    // Parse simple device type
-    let device = "Desktop";
-    if (/mobile/i.test(userAgent)) device = "Mobile";
-    else if (/tablet/i.test(userAgent)) device = "Tablet";
-
-    // Insert analytics log
+    // Insert analytics log matching your exact database columns
     await db.insert(analytics).values({
       linkId: link.id,
       visitorHash: clientHash,
       referrer: referrer,
-      device: device,
     });
 
     // 7. SUCCESS: Send them flying to their destination!
