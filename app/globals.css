@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* ── Light Mode Fallbacks ── */
+  --background: #fafafa;
+  --foreground: #09090b;
+  
+  --bg-main: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f4f4f5;
+  --bg-input: #ffffff;
+  
+  --border-muted: #e4e4e7;
+  --border-active: #d4d4d8;
+  --border-focus: #a1a1aa;
+  
+  --text-primary: #09090b;
+  --text-secondary: #27272a;
+  --text-muted: #71717a;
+  --text-dim: #a1a1aa;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --brand: #7c6ff7;
+  --brand-hover: #6a5ee0;
+  --brand-alpha: rgba(124, 111, 247, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* ── Dark Mode (Your Signature Theme) ── */
+    --background: #09090b;
+    --foreground: #f4f4f5;
+
+    --bg-main: #09090b;
+    --bg-surface: #111113;
+    --bg-surface-hover: #161619;
+    --bg-input: #070708;
+    
+    --border-muted: #1e1e22;
+    --border-active: #2a2a30;
+    --border-focus: #3f3e47;
+    
+    --text-primary: #f4f4f5;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --text-dim: #52525b;
+
+    --brand: #7c6ff7;
+    --brand-hover: #6a5ee0;
+    --brand-alpha: rgba(124, 111, 247, 0.08);
   }
 }
 
+/* ── Register Variables into Tailwind v4 Engine ── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-bg-main: var(--bg-main);
+  --color-surface: var(--bg-surface);
+  --color-surface-hover: var(--bg-surface-hover);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  
+  --color-text-muted: var(--text-muted);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-muted: var(--border-muted);
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+/* ── Base Styling Overrides ── */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

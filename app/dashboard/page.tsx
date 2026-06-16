@@ -1,4 +1,4 @@
-import { db } from "../../db";
+import { db } from "@/db";
 import { links, analytics } from "@/db/schema";
 import { desc, count, sql } from "drizzle-orm";
 import Link from "next/link";

@@ -10,10 +10,10 @@ const sqlConnection = neon(process.env.DATABASE_URL!);
 const db = drizzle(sqlConnection);
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = params;
+  const { slug } = await params;
 
   try {
     // 2. Look up the slug in our Neon database
@@ -56,7 +56,7 @@ export async function GET(
     let device = "Desktop";
     if (/mobile/i.test(userAgent)) device = "Mobile";
     else if (/tablet/i.test(userAgent)) device = "Tablet";
-    
+
     // Insert analytics log matching your exact database columns
     await db.insert(analytics).values({
       linkId: link.id,

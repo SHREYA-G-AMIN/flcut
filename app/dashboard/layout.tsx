@@ -1,7 +1,6 @@
 // FLCUT-AI-2627-visible
 import Link from "next/link";
 import { ReactNode } from "react";
-import "./dashboard.css";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: "⌂" },
