@@ -165,7 +165,7 @@ export default async function LinkDetailPage({
           {referrers.length === 0 ? (
             <p className="detail-empty">No referrer data yet.</p>
           ) : (
-            <ReferrerChart data={referrers} />
+            <ReferrerChart data={referrers} totalClicks={totals.total} />
           )}
         </div>
 

@@ -2,8 +2,8 @@
 
 type Row = { referrer: string | null; clicks: number };
 
-export function ReferrerChart({ data }: { data: Row[] }) {
-  const total = data.reduce((s, r) => s + r.clicks, 0);
+export function ReferrerChart({ data, totalClicks }: { data: Row[]; totalClicks?: number }) {
+  const total = totalClicks && totalClicks > 0 ? totalClicks : data.reduce((s, r) => s + r.clicks, 0);
   const max   = data[0]?.clicks ?? 1;
 
   return (

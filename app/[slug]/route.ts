@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { links, analytics } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 
 // 1. Initialize our database connection
 const sqlConnection = neon(process.env.DATABASE_URL!);
@@ -40,9 +40,28 @@ export async function GET(
     // 5. Guard: Check if the link has already expired
     if (link.expiresAt && now > new Date(link.expiresAt)) {
       if (link.fallbackUrl) {
-        return NextResponse.redirect(new URL(link.fallbackUrl));
+        const response = NextResponse.redirect(new URL(link.fallbackUrl), 308);
+        response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+        return response;
       }
       return new NextResponse("This event link has expired!", { status: 410 });
+    }
+
+    // 5b. Guard: Check click limits if configured
+    if (link.clickLimit !== null) {
+      const [clicksCountResult] = await db
+        .select({ count: count() })
+        .from(analytics)
+        .where(eq(analytics.linkId, link.id));
+
+      if (clicksCountResult.count >= link.clickLimit) {
+        if (link.fallbackUrl) {
+          const response = NextResponse.redirect(new URL(link.fallbackUrl), 308);
+          response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+          return response;
+        }
+        return new NextResponse("This link click limit has been reached!", { status: 410 });
+      }
     }
 
     // 6. Track simple analytics in the background before moving the user
@@ -66,7 +85,9 @@ export async function GET(
     });
 
     // 7. SUCCESS: Send them flying to their destination!
-    return NextResponse.redirect(new URL(link.longUrl));
+    const response = NextResponse.redirect(new URL(link.longUrl), 308);
+    response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+    return response;
 
   } catch (error) {
     console.error("Redirect Engine Error:", error);
