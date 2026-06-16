@@ -52,11 +52,17 @@ export async function GET(
     const referrer = request.headers.get("referer") || "Direct";
     const clientHash = Buffer.from(`${ip}-${userAgent}`).toString("base64").slice(0, 32);
 
+
+    let device = "Desktop";
+    if (/mobile/i.test(userAgent)) device = "Mobile";
+    else if (/tablet/i.test(userAgent)) device = "Tablet";
+    
     // Insert analytics log matching your exact database columns
     await db.insert(analytics).values({
       linkId: link.id,
       visitorHash: clientHash,
       referrer: referrer,
+      device: device,
     });
 
     // 7. SUCCESS: Send them flying to their destination!
