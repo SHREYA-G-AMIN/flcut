@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recha
 
 type Row = { device: string | null; clicks: number };
 
-const COLORS = ["#7c6ff7", "#3ddc84", "#f5c400", "#dc3d3d", "#4db8ff"];
+const COLORS = ["var(--brand)", "var(--success)", "var(--warning)", "var(--danger)", "var(--text-muted)"];
 
 export function DeviceChart({ data }: { data: Row[] }) {
   const cleaned = data.map((r) => ({
@@ -30,10 +30,10 @@ export function DeviceChart({ data }: { data: Row[] }) {
         </Pie>
         <Tooltip
           contentStyle={{
-            background: "#111113",
-            border: "1px solid #2a2a2e",
+            background: "var(--bg-surface)",
+            border: "1px solid var(--border-muted)",
             borderRadius: 6,
-            color: "#e8e8e8",
+            color: "var(--text-primary)",
             fontSize: 12,
           }}
         />
@@ -42,7 +42,7 @@ export function DeviceChart({ data }: { data: Row[] }) {
           iconSize={8}
           // Added explicit string typing here to appease the compiler
           formatter={(v: string) => (
-            <span style={{ color: "#888", fontSize: 12 }}>{v}</span>
+            <span style={{ color: "var(--text-muted)", fontSize: 12 }}>{v}</span>
           )}
         />
       </PieChart>

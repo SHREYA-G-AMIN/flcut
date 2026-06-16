@@ -28,42 +28,42 @@ export function ClickTimeline({ data, days }: Props) {
       <AreaChart data={filled} margin={{ top: 8, right: 8, left: -28, bottom: 0 }}>
         <defs>
           <linearGradient id="tlGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#7c6ff7" stopOpacity={0.25} />
-            <stop offset="95%" stopColor="#7c6ff7" stopOpacity={0}    />
+            <stop offset="5%"  stopColor="var(--brand)" stopOpacity={0.25} />
+            <stop offset="95%" stopColor="var(--brand)" stopOpacity={0}    />
           </linearGradient>
         </defs>
-        <CartesianGrid stroke="#1a1a1e" vertical={false} />
+        <CartesianGrid stroke="var(--border-muted)" vertical={false} />
         <XAxis
           dataKey="day"
-          tick={{ fill: "#444", fontSize: 11 }}
+          tick={{ fill: "var(--text-muted)", fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           interval={1}
         />
         <YAxis
-          tick={{ fill: "#444", fontSize: 11 }}
+          tick={{ fill: "var(--text-muted)", fontSize: 11 }}
           axisLine={false}
           tickLine={false}
           allowDecimals={false}
         />
         <Tooltip
           contentStyle={{
-            background: "#111113",
-            border: "1px solid #2a2a2e",
+            background: "var(--bg-surface)",
+            border: "1px solid var(--border-muted)",
             borderRadius: 6,
-            color: "#e8e8e8",
+            color: "var(--text-primary)",
             fontSize: 12,
           }}
-          cursor={{ stroke: "#7c6ff7", strokeWidth: 1 }}
+          cursor={{ stroke: "var(--brand)", strokeWidth: 1 }}
         />
         <Area
           type="monotone"
           dataKey="clicks"
-          stroke="#7c6ff7"
+          stroke="var(--brand)"
           strokeWidth={2}
           fill="url(#tlGrad)"
           dot={false}
-          activeDot={{ r: 4, fill: "#7c6ff7" }}
+          activeDot={{ r: 4, fill: "var(--brand)" }}
         />
       </AreaChart>
     </ResponsiveContainer>

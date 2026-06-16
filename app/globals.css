@@ -22,6 +22,21 @@
   --brand: #7c6ff7;
   --brand-hover: #6a5ee0;
   --brand-alpha: rgba(124, 111, 247, 0.08);
+
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --danger-bg: rgba(220, 38, 38, 0.06);
+  --danger-border: rgba(220, 38, 38, 0.15);
+
+  --success: #16a34a;
+  --success-hover: #15803d;
+  --success-bg: rgba(22, 163, 74, 0.06);
+  --success-border: rgba(22, 163, 74, 0.15);
+
+  --warning: #ca8a04;
+  --warning-hover: #a16207;
+  --warning-bg: rgba(202, 138, 4, 0.06);
+  --warning-border: rgba(202, 138, 4, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,6 +62,21 @@
     --brand: #7c6ff7;
     --brand-hover: #6a5ee0;
     --brand-alpha: rgba(124, 111, 247, 0.08);
+
+    --danger: #dc3d3d;
+    --danger-hover: #ef4444;
+    --danger-bg: rgba(220, 61, 61, 0.08);
+    --danger-border: rgba(220, 61, 61, 0.2);
+
+    --success: #3ddc84;
+    --success-hover: #4ef094;
+    --success-bg: rgba(61, 220, 132, 0.08);
+    --success-border: rgba(61, 220, 132, 0.2);
+
+    --warning: #f5c400;
+    --warning-hover: #ffdf4d;
+    --warning-bg: rgba(245, 196, 0, 0.08);
+    --warning-border: rgba(245, 196, 0, 0.2);
   }
 }
 
