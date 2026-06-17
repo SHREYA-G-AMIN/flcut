@@ -1,123 +1,114 @@
 # flcut — Modern Short-Link Manager & Analytics
 
-**flcut** is a simple, beautiful, and private short-link manager. It lets you create custom short links (like `flcut/hackfest26`), schedule when they go live, set expiration dates, set click limits, and view detailed traffic analytics.
+## About the Project
+**flcut** is a URL shortener built for Finite Loop Club Events.
+The goal was not just to shorten links but also to make them easier to manage during events.
 
 ---
 
-## 🌟 Key Features
-
-* **Custom Link Shortening**: Create clean short links with custom names (aliases).
-* **Smart Scheduling**: Set a start date ("go live") and an expiration date for your links.
-* **Click Limits**: Set a maximum number of clicks. Once reached, the link automatically stops working or redirects to a fallback link.
-* **Fallbacks**: Redirect users to an alternative fallback URL when a link is expired or full.
-* **Visual Analytics**: Beautiful graphs showing total clicks, unique visitors, referral traffic, and device breakdowns.
-* **Privacy-Friendly**: Uses secure hashes to count unique visitors without storing raw IP addresses.
-
----
-
-## 🛠️ Tech Stack
-
-* **Framework**: Next.js (App Router, React server components)
-* **Styling**: Tailwind CSS v4 and vanilla CSS variables
-* **Database**: Neon (Serverless PostgreSQL)
-* **Database Tool**: Drizzle ORM
-* **Charts**: Recharts (fully aligned with light and dark modes)
+## Tech Stacks 
+- Next.js (App Router)
+- TypeScript
+- PostgreSQL (Neon)
+- Drizzle ORM
+- Tailwind CSS
+- Recharts
 
 ---
+## What's my data model, and why did I design it that way?
 
-## 🔍 How the Live Demo Works Behind the Scenes
+### Data Model
 
-Here is exactly what happens when you create, click, and track a short link in **flcut**:
+I designed the database around two main entities : Links and Analytics.
+ 
+ ### Links Table
 
-```mermaid
-sequenceDiagram
-    actor User as Visitor
-    actor Creator as Link Creator
-    participant Server as Next.js Server
-    participant DB as Neon Postgres DB
-    participant Target as Destination Website
+ The Links table stores all the information required for redirection and link management.
 
-    Creator->>Server: Create Link Form (slug, destination, limits)
-    Server->>DB: Save link details to "links" table
-    Note over User, Target: Later, when a visitor clicks the link
-    User->>Server: Access flcut.finiteloop.club/hackfest26
-    Server->>DB: Fetch link metadata for slug "hackfest26"
-    DB-->>Server: Return active status, limits, and URLs
-    Note over Server: Server checks limits & dates
-    alt Link is Expired or Click Limit Reached
-        Server->>User: Redirect to Fallback URL or show 410 Error
-    else Link is Valid
-        Note over Server: Gather User Agent & Referrer header
-        Server->>Server: Hash (IP + User Agent) to create visitor ID
-        Server->>DB: Save click log to "analytics" table
-        Server->>User: HTTP 308 Redirect + Cache-Control: no-cache
-        User->>Target: Land on Destination URL
-    end
-```
+ Some important fields are :
+ - slug (short URL identifier)
+ - longUrl (destination URL)
+ - fallbackUrl
+- goLiveAt
+- expiresAt
+- clickLimit
+- isActive
 
-### Step 1: You Create the Link
-1. You fill out the form on the dashboard. You enter the long URL (destination) and a custom alias (slug), such as `hackfest26`. You can also set click limits, fallback links, or go-live and expiration dates.
-2. When you click **Create Link**, a Next.js Server Action (`createLink`) runs. It checks if the alias is valid and not taken.
-3. The server writes a new row containing these settings to the `links` table in the Neon PostgreSQL database using Drizzle ORM.
+Each record represents one shortened link.
 
-### Step 2: A Visitor Clicks the Link
-1. A visitor enters or clicks `http://localhost:3000/hackfest26`.
-2. Next.js routes this request to the dynamic catch-all route handler inside [app/\[slug\]/route.ts](file:///c:/Users/shrey/OneDrive/Desktop/Open%20Source/flcut/app/%5Bslug%5D/route.ts).
+### Analytics Table
 
-### Step 3: Server Validation & Security Guards
-The server fetches the link configuration from the database and runs four checks:
-* **Active Status**: Is the link paused? If yes, show a `404 Not Found` page.
-* **Go-Live Date**: Has the event registration or link activation started? If it is too early, return a `403 Forbidden` page.
-* **Expiration Date**: Is it past the link's end date? If expired, redirect the visitor to the fallback URL (if provided) or return a `410 Gone` page.
-* **Click Limit**: How many clicks has this link received? The server counts the number of existing logs in the database. If the count is equal to or greater than the limit, redirect to the fallback URL (if provided) or return a `410 Gone` page.
+The analytics table stores information about every click on a link.
 
-### Step 4: Analytics Collection (Privacy-Safe)
-If all checks pass, the server gathers details about the click:
-1. **Device Identification**: It inspects the `User-Agent` header to check if the browser is on a Mobile, Tablet, or Desktop.
-2. **Referrer Header**: It checks the `Referer` header to see where the visitor came from (like Twitter, GitHub, or a direct visit).
-3. **Unique visitor hash**: To count unique visitors without storing sensitive personal info, it hashes the visitor's IP address and User Agent together into a short base64 string (e.g. `dXNlci1hZ2VudC1pcC1oYXNo`).
-4. **Database Record**: It inserts a new log row into the `analytics` table.
+Some important fields are:
+- linkId
+- visitorHash
+- device
+- referrer
+- createdAt
 
-### Step 5: Redirection (Why it does not cache)
-1. The server generates an **HTTP 308 Permanent Redirect** response to send the visitor to their destination.
-2. Crucially, the server appends the header: `Cache-Control: no-cache, no-store, must-revalidate`.
-3. **Why this header is important**: Usually, web browsers cache permanent redirects. If a browser caches the redirect, the next time the same visitor clicks the link, their browser will jump directly to the destination without asking our server first. By forcing `no-cache`, the browser must contact our server on every single click, allowing us to record every single visitor click.
+Each analytics record belongs to a specific link through the linkId field.
 
-### Step 6: Visualizing the Data
-1. When you open the dashboard page, Next.js fetches the database logs.
-2. The server sums the clicks, groups them by day, device, and referrer, and calculates percentage shares.
-3. The server feeds this clean data into our Recharts visualization code. The graphs automatically match light or dark mode styles depending on your system settings.
+### Relationship
 
----
+The relationship is one-to-many.
 
-## 🚀 Getting Started
+One link can have many analytics records because a single link may be clicked hundreds or thousands of times
 
-### 1. Prerequisites
-Ensure you have **Node.js 18+** installed on your system.
+### Why I chose this design
 
-### 2. Install Dependencies
-Clone the repository and install the dependencies:
-```bash
-npm install
-```
+I separated link data and analytics data because they have different purposes.
 
-### 3. Database Configurations
-Create a `.env` file in the project root folder and add your Neon PostgreSQL database URL:
-```env
-DATABASE_URL="postgresql://user:password@endpoint/dbname?sslmode=require"
-NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-```
+The Links table contains configuration data that changes rarely while Analytics table continuously grows as users clicks links.
 
-### 4. Push Database Schema
-Set up the tables in your database:
-```bash
-npx drizzle-kit push
-```
+Keeping them separate makes queries simpler and prevents the main link records from becoming overloaded with tracking data.
 
-### 5. Start the Development Server
-Run the local dev server:
-```bash
-npm run dev
-```
+It also makes future scaling earier because analytics data can grow much faster than link data.
 
-Open [http://localhost:3000](http://localhost:3000) to view the application dashboard.
+## If i had only 4 hours
+
+I would focus on the core functionality first :
+
+1. Create short links
+2. Redirect users correctly 
+3. Store links in PostgreSQL
+4. Show links on a dashboard
+
+Things I would cut:
+- Analytics charts
+- Click limits
+- Go-live scheduling
+- Device and referrer tracking
+
+My priority would be tomake sure the basic link shortening workflow works reliably before adding extra features.
+
+## Tradeoff I made
+
+For unique click tracking i used a hash of the visitor IP and user agent instead of storing the actual IP address.
+
+The advantage is better privacy.
+
+The downside is that it is not a perfect way to identify uses because different people can similar network enviroments.
+
+I felt this was a resonable compromise for the project.
+
+## Assumptions
+
+The PRD intentionally left some decisions open, so I made the following assumptions:
+
+- A unique click is identified using a hashed IP + User Agent combination.
+- Reserved words such as "dashboard", "api", and "links" cannot be used as aliases.
+- If no custom alias is provided, a random short code is generated.
+- Analytics data remains available even after a link expires.
+- Authentication was not added because I treated this as an internal club tool and wanted to focus on the core requirements first.
+
+## What I Learned
+
+This project helped me understand:
+
+- URL routing in Next.js
+- Database design with PostgreSQL
+- Using Drizzle ORM
+- Handling redirects
+- Tracking analytics events
+- Thinking about tradeoffs instead of only writing code
