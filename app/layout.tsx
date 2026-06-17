@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "flcut — Premium Link Shortener",
+  title: "flcut — Link Shortener",
   description: "Create, manage, and track your short links with advanced real-time analytics.",
 };
 
