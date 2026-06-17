@@ -103,50 +103,52 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <table className="links-table">
-            <thead>
-              <tr>
-                <th>Slug</th>
-                <th>Destination</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentLinks.map((link) => {
-                const status = getLinkStatus(link, now);
-                return (
-                  <tr key={link.id}>
-                    <td>
-                      <span className="slug-chip">/{link.slug}</span>
-                    </td>
-                    <td>
-                      <span className="dest-url" title={link.longUrl}>
-                        {truncate(link.longUrl, 48)}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`status-badge status-${status.type}`}>
-                        {status.label}
-                      </span>
-                    </td>
-                    <td className="date-cell">
-                      {formatDate(link.createdAt)}
-                    </td>
-                    <td>
-                      <Link
-                        href={`/dashboard/links/${link.id}`}
-                        className="row-action"
-                      >
-                        View →
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="links-table-wrapper">
+            <table className="links-table">
+              <thead>
+                <tr>
+                  <th>Slug</th>
+                  <th>Destination</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentLinks.map((link) => {
+                  const status = getLinkStatus(link, now);
+                  return (
+                    <tr key={link.id}>
+                      <td>
+                        <span className="slug-chip">/{link.slug}</span>
+                      </td>
+                      <td>
+                        <span className="dest-url" title={link.longUrl}>
+                          {truncate(link.longUrl, 48)}
+                        </span>
+                      </td>
+                      <td>
+                        <span className={`status-badge status-${status.type}`}>
+                          {status.label}
+                        </span>
+                      </td>
+                      <td className="date-cell">
+                        {formatDate(link.createdAt)}
+                      </td>
+                      <td>
+                        <Link
+                          href={`/dashboard/links/${link.id}`}
+                          className="row-action"
+                        >
+                          View →
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
