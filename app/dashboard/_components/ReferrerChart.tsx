@@ -10,8 +10,8 @@ export function ReferrerChart({ data, totalClicks }: { data: Row[]; totalClicks?
     <div className="bar-list">
       {data.map((row, i) => {
         const label = row.referrer || "Direct / unknown";
-        const pct   = Math.round((row.clicks / total) * 100);
-        const width = Math.round((row.clicks / max) * 100);
+        const pct   = total > 0 ? Math.round((row.clicks / total) * 100) : 0;
+        const width = max > 0 ? Math.round((row.clicks / max) * 100) : 0;
 
         return (
           <div key={i} className="bar-row">

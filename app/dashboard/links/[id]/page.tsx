@@ -21,13 +21,15 @@ async function getLinkWithStats(id: string) {
 
   if (!link) return null;
 
-  const [totals] = await db
+  const fetchedTotals = await db
     .select({
       total: count(),
       unique: sql<number>`count(distinct ${analytics.visitorHash})`,
     })
     .from(analytics)
     .where(eq(analytics.linkId, id));
+
+  const totals = fetchedTotals[0] ?? { total: 0, unique: 0 };
 
   // Clicks per day — last 14 days
   const timeline = await db
