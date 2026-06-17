@@ -8,10 +8,33 @@ export function CopySlug({ url }: { url: string }) {
   function copy(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    navigator.clipboard.writeText(url).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+
+    try {
+      const textBlob = new Blob([url], { type: "text/plain" });
+      const htmlBlob = new Blob([`<a href="${url}">${url}</a>`], { type: "text/html" });
+      const data = [
+        new ClipboardItem({
+          "text/plain": textBlob,
+          "text/html": htmlBlob,
+        }),
+      ];
+      navigator.clipboard.write(data).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch(() => {
+        // Fallback for browsers that don't support custom ClipboardItem types fully
+        navigator.clipboard.writeText(url).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      });
+    } catch {
+      // General fallback
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
   }
 
   return (
