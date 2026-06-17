@@ -15,7 +15,6 @@ The goal was not just to shorten links but also to make them easier to manage du
 - Recharts
 
 ---
-## What's my data model, and why did I design it that way?
 
 ### Data Model
 
