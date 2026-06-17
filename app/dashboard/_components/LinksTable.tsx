@@ -55,89 +55,91 @@ export function LinksTable({ links }: { links: LinkRow[] }) {
         </span>
       </div>
 
-      <table className="links-table links-table--full">
-        <thead>
-          <tr>
-            <th>Slug</th>
-            <th>Destination</th>
-            <th>Status</th>
-            <th>Expires</th>
-            <th>Created</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((link) => {
-            const status = getLinkStatus(link, now);
-            return (
-              <tr key={link.id}>
-                <td>
-                  <span className="slug-chip">/{link.slug}</span>
-                </td>
-                <td>
-                  <span className="dest-url" title={link.longUrl}>
-                    {link.longUrl.length > 52
-                      ? link.longUrl.slice(0, 52) + "…"
-                      : link.longUrl}
-                  </span>
-                </td>
-                <td>
-                  <span className={`status-badge status-${status.type}`}>
-                    {status.label}
-                  </span>
-                </td>
-                <td className="date-cell">
-                  {link.expiresAt
-                    ? new Intl.DateTimeFormat("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }).format(new Date(link.expiresAt))
-                    : "—"}
-                </td>
-                <td className="date-cell">
-                  {link.createdAt
-                    ? new Intl.DateTimeFormat("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                      }).format(new Date(link.createdAt))
-                    : "—"}
-                </td>
-                <td>
-                  <div className="row-actions">
-                    <Link
-                      href={`/dashboard/links/${link.id}`}
-                      className="row-action"
-                    >
-                      Analytics
-                    </Link>
-                    <button
-                      className="row-action"
-                      onClick={() =>
-                        startTransition(() =>
-                          toggleLink(link.id, !link.isActive)
-                        )
-                      }
-                    >
-                      {link.isActive ? "Disable" : "Enable"}
-                    </button>
-                    <button
-                      className="row-action row-action--danger"
-                      onClick={() => {
-                        if (confirm(`Delete /${link.slug}? This can't be undone.`))
-                          startTransition(() => deleteLink(link.id));
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="links-table-wrapper">
+        <table className="links-table links-table--full">
+          <thead>
+            <tr>
+              <th>Slug</th>
+              <th>Destination</th>
+              <th>Status</th>
+              <th>Expires</th>
+              <th>Created</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((link) => {
+              const status = getLinkStatus(link, now);
+              return (
+                <tr key={link.id}>
+                  <td>
+                    <span className="slug-chip">/{link.slug}</span>
+                  </td>
+                  <td>
+                    <span className="dest-url" title={link.longUrl}>
+                      {link.longUrl.length > 52
+                        ? link.longUrl.slice(0, 52) + "…"
+                        : link.longUrl}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={`status-badge status-${status.type}`}>
+                      {status.label}
+                    </span>
+                  </td>
+                  <td className="date-cell">
+                    {link.expiresAt
+                      ? new Intl.DateTimeFormat("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }).format(new Date(link.expiresAt))
+                      : "—"}
+                  </td>
+                  <td className="date-cell">
+                    {link.createdAt
+                      ? new Intl.DateTimeFormat("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                        }).format(new Date(link.createdAt))
+                      : "—"}
+                  </td>
+                  <td>
+                    <div className="row-actions">
+                      <Link
+                        href={`/dashboard/links/${link.id}`}
+                        className="row-action"
+                      >
+                        Analytics
+                      </Link>
+                      <button
+                        className="row-action"
+                        onClick={() =>
+                          startTransition(() =>
+                            toggleLink(link.id, !link.isActive)
+                          )
+                        }
+                      >
+                        {link.isActive ? "Disable" : "Enable"}
+                      </button>
+                      <button
+                        className="row-action row-action--danger"
+                        onClick={() => {
+                          if (confirm(`Delete /${link.slug}? This can't be undone.`))
+                            startTransition(() => deleteLink(link.id));
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

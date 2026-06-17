@@ -174,3 +174,177 @@
     display: none; /* Remove footer tag on mobile layout views to save layout space */
   }
 }
+
+/* Shared Primary Button Style */
+.btn-primary {
+  background: var(--brand);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.1s;
+}
+
+.btn-primary:hover {
+  background: var(--brand-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* Shared Core Table Styling */
+.links-table-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-muted);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.links-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.links-table th {
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.01);
+  border-bottom: 1px solid var(--border-muted);
+}
+
+.links-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-muted);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.links-table tr:hover td {
+  background: var(--bg-surface-hover);
+}
+
+.links-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Monospace Slug Components */
+.slug-chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--brand-alpha);
+  color: var(--brand);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(124, 111, 247, 0.2);
+  display: inline-block;
+}
+
+.dest-url {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Elegant Status Badges */
+.status-badge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-active    { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+.status-scheduled { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
+.status-expired   { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+.status-inactive  { background: var(--bg-surface-hover); color: var(--text-secondary); border: 1px solid var(--border-muted); }
+
+.date-cell {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Premium Row Action Buttons (Chips) */
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.row-action {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.row-action:hover {
+  background: var(--brand-alpha);
+  color: var(--brand);
+  border-color: var(--brand);
+  text-decoration: none;
+}
+
+.row-action--danger {
+  color: var(--text-muted);
+  border-color: var(--border-muted);
+}
+
+.row-action--danger:hover {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* ── Dash Empty Board Block ────────────────────────────── */
+.empty-state {
+  background: var(--bg-surface);
+  border: 2px dashed var(--border-muted);
+  border-radius: 12px;
+  padding: 64px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--text-muted);
+}
+
+.empty-state p {
+  margin: 0;
+  max-width: 280px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
