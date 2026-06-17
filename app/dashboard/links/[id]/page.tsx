@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { links, analytics } from "@/db/schema";
 import { eq, count, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { ClickTimeline } from "@/app/dashboard/_components/ClickTimeLine";
 import { ReferrerChart } from "@/app/dashboard/_components/ReferrerChart";
@@ -87,7 +88,11 @@ export default async function LinkDetailPage({
   const now = new Date();
 
   const status = getLinkStatus(link, now);
-  const shortUrl = `${process.env.NEXT_PUBLIC_BASE_URL ?? "https://flcut.finiteloop.club"}/${link.slug}`;
+  const headersList = await headers();
+  const host = headersList.get("host") || "localhost:3000";
+  const proto = headersList.get("x-forwarded-proto") || "http";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${proto}://${host}`;
+  const shortUrl = `${baseUrl}/${link.slug}`;
 
   return (
     <div className="detail-page">
